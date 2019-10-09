@@ -49,6 +49,9 @@ steps:
 
 - script:
     ls -l $(Pipeline.Workspace)/s
+    git add .
+    git commit -m "adding pip files"
+    git push
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
