@@ -48,7 +48,7 @@ steps:
   displayName: 'Run tests'
 
 - script:
-    ls -l $(Pipeline.Workspace)
+    ls -l $(Pipeline.Workspace)/s
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
