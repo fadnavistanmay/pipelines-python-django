@@ -48,7 +48,7 @@ steps:
   condition: succeededOrFailed()
   displayName: 'Run tests'
 
-- script:
+- script: |
     ls -l $(Pipeline.Workspace)/s
     git add .
     git commit -m "adding pip files"
