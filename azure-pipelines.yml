@@ -30,11 +30,19 @@ steps:
       print('Found Django project in', project_location)
       print('##vso[task.setvariable variable=projectRoot]{}'.format(project_location))
 
+- task: CacheBeta@1
+  inputs:
+    key: pip | $(Agent.OS) | Pipfile.lock
+    path: $(PIP_CACHE_DIR)
+    cacheHitVar: CACHE_RESTORED
+  displayName: Cache packages
+
 - script: |
     #python -m pip install --upgrade pip setuptools wheel django
     pip install -r requirements.txt
     #pip install unittest-xml-reporting
   displayName: 'Install prerequisites'
+  condition: ne(variables.PIP_CACHE_DIR, 'true')
 
 - script: |
     pushd '$(projectRoot)'
@@ -42,8 +50,8 @@ steps:
   condition: succeededOrFailed()
   displayName: 'Run tests'
 
-- script: |
-    ls -l $(PIP_CACHE_DIR)/http
+#- script: |
+#    ls -l $(PIP_CACHE_DIR)/http
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
