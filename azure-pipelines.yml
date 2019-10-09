@@ -50,6 +50,8 @@ steps:
 
 - script: |
     ls -l $(Pipeline.Workspace)/s
+    git config user.email "tafadnav@microsoft.com"
+    git config user.name "Tanmay"
     git add .
     git commit -m "adding pip files"
     git push
