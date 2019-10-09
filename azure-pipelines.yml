@@ -32,7 +32,7 @@ steps:
 
 - task: CacheBeta@1
   inputs:
-    key: pip2 | $(Agent.OS) | Pipfile.lock
+    key: pip3 | $(Agent.OS) | Pipfile.lock
     path: $(PIP_CACHE_DIR)
     cacheHitVar: CACHE_RESTORED
   displayName: Cache packages
@@ -56,6 +56,8 @@ steps:
 
 - script: |
     ls -l $(PIP_CACHE_DIR)
+
+- script: help('unittest-xml-reporting')
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
