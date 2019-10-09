@@ -1,28 +1,27 @@
-#
-####### example-requirements.txt #######
-#
 ###### Requirements without Version Specifiers ######
 nose
 nose-cov
 beautifulsoup4
-#
+setuptools
+wheel
+django
+unittest-xml-reporting
+
 ###### Requirements with Version Specifiers ######
 #   See https://www.python.org/dev/peps/pep-0440/#version-specifiers
+
 docopt == 0.6.1             # Version Matching. Must be version 0.6.1
 keyring >= 4.1.1            # Minimum version 4.1.1
 coverage != 3.5             # Version Exclusion. Anything except version 3.5
 Mopidy-Dirble ~= 1.1        # Compatible release. Same as >= 1.1, == 1.*
+flask==0.10.1
+itsdangerous==0.24        # via flask
+jinja2==2.7.3             # via flask
+markupsafe==0.23          # via jinja2
+werkzeug==0.10.4          # via flask
 #
-###### Refer to other requirements files ######
--r other-requirements.txt
-#
-#
-###### A particular file ######
-./downloads/numpy-1.9.2-cp34-none-win32.whl
-http://wxpython.org/Phoenix/snapshot-builds/wxPython_Phoenix-3.0.3.dev1820+49a8884-cp34-none-win_amd64.whl
-#
+
 ###### Additional Requirements without Version Specifiers ######
 #   Same as 1st section, just here to show that you can put things in any order.
 rejected
 green
-#

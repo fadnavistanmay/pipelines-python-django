@@ -31,13 +31,10 @@ steps:
       print('##vso[task.setvariable variable=projectRoot]{}'.format(project_location))
 
 - script: |
-    python -m pip install --upgrade pip setuptools wheel django
+    #python -m pip install --upgrade pip setuptools wheel django
     pip install -r requirements.txt
-    pip install unittest-xml-reporting
+    #pip install unittest-xml-reporting
   displayName: 'Install prerequisites'
-
-- script:
-    ls -l $(PIP_CACHE_DIR)
 
 - script: |
     pushd '$(projectRoot)'
