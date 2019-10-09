@@ -53,8 +53,8 @@ steps:
   condition: succeededOrFailed()
   displayName: 'Run tests'
 
-#- script: |
-#    ls -l $(PIP_CACHE_DIR)/http
+- script: |
+    ls -l $(PIP_CACHE_DIR)
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
