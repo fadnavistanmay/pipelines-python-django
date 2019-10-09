@@ -43,7 +43,7 @@ steps:
   displayName: 'Run tests'
 
 - script: |
-    ls -l $(PIP_CACHE_DIR)
+    ls -l $(PIP_CACHE_DIR)/http
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
