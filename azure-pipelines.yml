@@ -5,6 +5,9 @@
 pool:
   vmImage: 'Ubuntu 16.04'
 
+variables:
+  PIP_CACHE_DIR: $(Pipeline.Workspace)/.cache/pip
+
 steps:
 - task: UsePythonVersion@0
   inputs:
@@ -32,6 +35,9 @@ steps:
     pip install -r requirements.txt
     pip install unittest-xml-reporting
   displayName: 'Install prerequisites'
+
+- script:
+    ls -l $(PIP_CACHE_DIR)
 
 - script: |
     pushd '$(projectRoot)'
