@@ -57,7 +57,7 @@ steps:
 - script: |
     ls -l $(PIP_CACHE_DIR)
 
-- script: help('unittest-xml-reporting')
+- script: python help('unittest-xml-reporting')
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
