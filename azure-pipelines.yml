@@ -32,7 +32,7 @@ steps:
 
 - task: CacheBeta@1
   inputs:
-    key: pip | $(Agent.OS) | Pipfile.lock
+    key: pip2 | $(Agent.OS) | Pipfile.lock
     path: $(PIP_CACHE_DIR)
     cacheHitVar: CACHE_RESTORED
   displayName: Cache packages
@@ -42,6 +42,7 @@ steps:
 - script: |
     #python -m pip install --upgrade pip setuptools wheel django
     pip install -r requirements.txt
+    pipenv install
     #pip install unittest-xml-reporting
   displayName: 'Install prerequisites'
   condition: ne(variables.CACHE_RESTORED, 'true')
