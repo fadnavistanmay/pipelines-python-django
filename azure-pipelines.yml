@@ -6,7 +6,7 @@ pool:
   vmImage: 'Ubuntu 16.04'
 
 variables:
-  PYTHONUSERBASE: $(Pipeline.Workspace)/.cache/pip
+  PREFIX_PATH: $(Pipeline.Workspace)/.cache/pip
 
 steps:
 - task: UsePythonVersion@0
@@ -32,8 +32,8 @@ steps:
 
 - task: CacheBeta@1
   inputs:
-    key: pipww13 | $(Agent.OS) | Pipfile.lock
-    path: $(PYTHONUSERBASE)
+    key: pipww14 | $(Agent.OS) | Pipfile.lock
+    path: $(PREFIX_PATH)
     cacheHitVar: CACHE_RESTORED
   displayName: Cache packages
 
@@ -42,7 +42,7 @@ steps:
 - script: |
     #python -m pip install --upgrade pip setuptools wheel django
     pip install --user
-    pip install -r requirements.txt
+    pip install --install-option="--prefix=$(PREFIX_PATH)" -r requirements.txt
     #pip install unittest-xml-reporting
   displayName: 'Install prerequisites'
   condition: ne(variables.CACHE_RESTORED, 'true')
@@ -54,7 +54,7 @@ steps:
   displayName: 'Run tests'
 
 - script: |
-    ls -l $(PYTHONUSERBASE)
+    ls -l $(PREFIX_PATH)
 
 - script: python -c 'help("xmlrunner")'
 
