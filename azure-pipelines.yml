@@ -33,7 +33,7 @@ steps:
 - task: CacheBeta@1
   inputs:
     key: pipww13 | $(Agent.OS) | Pipfile.lock
-    path: $(PIP_CACHE_DIR)
+    path: $(PYTHONUSERBASE)
     cacheHitVar: CACHE_RESTORED
   displayName: Cache packages
 
@@ -54,7 +54,7 @@ steps:
   displayName: 'Run tests'
 
 - script: |
-    ls -l $(PIP_CACHE_DIR)
+    ls -l $(PYTHONUSERBASE)
 
 - script: python -c 'help("xmlrunner")'
 
