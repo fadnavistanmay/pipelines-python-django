@@ -6,7 +6,7 @@ pool:
   vmImage: 'Ubuntu 16.04'
 
 variables:
-  PIP_CACHE_DIR: $(Pipeline.Workspace)/.cache/pip
+  PYTHONUSERBASE: $(Pipeline.Workspace)/.cache/pip
 
 steps:
 - task: UsePythonVersion@0
@@ -32,18 +32,17 @@ steps:
 
 - task: CacheBeta@1
   inputs:
-    key: pipww3 | $(Agent.OS) | Pipfile.lock
+    key: pipww13 | $(Agent.OS) | Pipfile.lock
     path: $(PIP_CACHE_DIR)
     cacheHitVar: CACHE_RESTORED
   displayName: Cache packages
 
-- script: python -m pip install setuptools django
+- script: python -m pip install django
   
 - script: |
     #python -m pip install --upgrade pip setuptools wheel django
+    pip install --user
     pip install -r requirements.txt
-    pip install pipenv
-    pipenv install
     #pip install unittest-xml-reporting
   displayName: 'Install prerequisites'
   condition: ne(variables.CACHE_RESTORED, 'true')
