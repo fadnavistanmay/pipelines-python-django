@@ -4,6 +4,7 @@ nose-cov
 beautifulsoup4
 setuptools
 wheel
+django
 unittest-xml-reporting
 
 ###### Requirements with Version Specifiers ######

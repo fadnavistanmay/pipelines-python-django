@@ -33,16 +33,16 @@ steps:
 
 - task: CacheBeta@1
   inputs:
-    key: pipww143 | $(Agent.OS) | Pipfile.lock
+    key: pipww1a43 | $(Agent.OS) | Pipfile.lock
     path: $(PYTHONPATH)
     cacheHitVar: CACHE_RESTORED
   displayName: Cache packages
 
-- script: python -m pip install django
+#- script: python -m pip install django
   
 - script: |
     #python -m pip install --upgrade pip setuptools wheel django
-    pip install --user
+    #pip install --user
     pip install --target=$(PYTHONPATH) -r requirements.txt
     #pip install unittest-xml-reporting
   displayName: 'Install prerequisites'
