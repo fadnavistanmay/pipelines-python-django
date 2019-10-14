@@ -23,5 +23,5 @@ werkzeug==0.10.4          # via flask
 
 ###### Additional Requirements without Version Specifiers ######
 #   Same as 1st section, just here to show that you can put things in any order.
-#rejected
-#green
+rejected
+green
