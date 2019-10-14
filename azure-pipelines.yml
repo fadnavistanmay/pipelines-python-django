@@ -9,6 +9,7 @@ variables:
   #PREFIX_PATH: $(Pipeline.Workspace)/.cache/pip
   PYTHONPATH: $(Pipeline.Workspace)/.cache/pip
   CACHE_KEY: python | django | $(Agent.OS) | $(Build.BuildId) | Pipfile.lock
+  AGENT: $(Agent.OS)
 
 stages:
 - stage: firstrun
