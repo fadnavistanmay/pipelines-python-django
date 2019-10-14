@@ -2,65 +2,78 @@
 # Test a Django project on multiple versions of Python.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
-pool:
-  vmImage: 'Ubuntu 16.04'
+#pool:
+#  vmImage: 'Ubuntu 16.04'
 
 variables:
   #PREFIX_PATH: $(Pipeline.Workspace)/.cache/pip
   PYTHONPATH: $(Pipeline.Workspace)/.cache/pip
+  CACHE_KEY: python | django | $(Agent.OS) | $(Build.BuildId) | Pipfile.lock
 
-steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: 3.5
-    architecture: 'x64'
+stages:
+- stage: firstrun
+  displayName: 'Empty cache'
+  jobs:
+  - template: azure-pipelines-jobs.yml
 
-- task: PythonScript@0
-  displayName: 'Export project path'
-  inputs:
-    scriptSource: 'inline'
-    script: |
-      """Search all subdirectories for `manage.py`."""
-      from glob import iglob
-      from os import path
-      # Python >= 3.5
-      manage_py = next(iglob(path.join('**', 'manage.py'), recursive=True), None)
-      if not manage_py:
-          raise SystemExit('Could not find a Django project')
-      project_location = path.dirname(path.abspath(manage_py))
-      print('Found Django project in', project_location)
-      print('##vso[task.setvariable variable=projectRoot]{}'.format(project_location))
+- stage: secondrun
+  dependsOn: firstrun
+  displayName: 'Cached'
+  jobs:
+  - template: azure-pipelines-jobs.yml
 
-- task: CacheBeta@1
-  inputs:
-    key: pipww1a43 | $(Agent.OS) | Pipfile.lock
-    path: $(PYTHONPATH)
-    cacheHitVar: CACHE_RESTORED
-  displayName: Cache packages
-
-#- script: python -m pip install django
-  
-- script: |
-    #python -m pip install --upgrade pip setuptools wheel django
-    #pip install --user
-    pip install --target=$(PYTHONPATH) -r requirements.txt
-    #pip install unittest-xml-reporting
-  displayName: 'Install prerequisites'
-  condition: ne(variables.CACHE_RESTORED, 'true')
-
-- script: |
-    pushd '$(projectRoot)'
-    python manage.py test --testrunner xmlrunner.extra.djangotestrunner.XMLTestRunner --no-input
-  condition: succeededOrFailed()
-  displayName: 'Run tests'
-
-- script: |
-    ls -l $(PYTHONPATH)
-
-- script: python -c 'help("xmlrunner")'
-
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testResultsFiles: "**/TEST-*.xml"
-    testRunTitle: 'Python $(PYTHON_VERSION)'
+#steps:
+#- task: UsePythonVersion@0
+#  inputs:
+#    versionSpec: 3.5
+#    architecture: 'x64'
+#
+#- task: PythonScript@0
+#  displayName: 'Export project path'
+#  inputs:
+#    scriptSource: 'inline'
+#    script: |
+#      """Search all subdirectories for `manage.py`."""
+#      from glob import iglob
+#      from os import path
+#      # Python >= 3.5
+#      manage_py = next(iglob(path.join('**', 'manage.py'), recursive=True), None)
+#      if not manage_py:
+#          raise SystemExit('Could not find a Django project')
+#      project_location = path.dirname(path.abspath(manage_py))
+#      print('Found Django project in', project_location)
+#      print('##vso[task.setvariable variable=projectRoot]{}'.format(project_location))
+#
+#- task: CacheBeta@1
+#  inputs:
+#    key: pipww1a43 | $(Agent.OS) | Pipfile.lock
+#    path: $(PYTHONPATH)
+#    cacheHitVar: CACHE_RESTORED
+#  displayName: Cache packages
+#
+##- script: python -m pip install django
+#  
+#- script: |
+#    #python -m pip install --upgrade pip setuptools wheel django
+#    #pip install --user
+#    pip install --target=$(PYTHONPATH) -r requirements.txt
+#    #pip install unittest-xml-reporting
+#  displayName: 'Install prerequisites'
+#  condition: ne(variables.CACHE_RESTORED, 'true')
+#
+#- script: |
+#    pushd '$(projectRoot)'
+#    python manage.py test --testrunner xmlrunner.extra.djangotestrunner.XMLTestRunner --no-input
+#  condition: succeededOrFailed()
+#  displayName: 'Run tests'
+#
+#- script: |
+#    ls -l $(PYTHONPATH)
+#
+#- script: python -c 'help("xmlrunner")'
+#
+#- task: PublishTestResults@2
+#  condition: succeededOrFailed()
+#  inputs:
+#    testResultsFiles: "**/TEST-*.xml"
+#    testRunTitle: 'Python $(PYTHON_VERSION)'
