@@ -43,10 +43,11 @@ steps:
   condition: succeededOrFailed()
   displayName: 'Run tests'
 
-- script: |
-    ls -l $(PYTHONPATH)
+- script: ls -l $(PYTHONPATH)
+  condition: succeededOrFailed()
 
 - script: python -c 'help("xmlrunner")'
+  condition: succeededOrFailed()
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
