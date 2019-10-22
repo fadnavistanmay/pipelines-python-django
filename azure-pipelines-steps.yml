@@ -28,11 +28,7 @@ steps:
   displayName: Cache packages
 
 - script: |
-    #python -m pip install --upgrade pip setuptools wheel django
-    #pip install --user
     pip install --target=$(PYTHONPATH) -r requirements.txt
-    #python -m pip install --upgrade pip setuptools pip wheel django
-    #pip install unittest-xml-reporting
   displayName: 'Install prerequisites'
   condition: ne(variables.CACHE_RESTORED, 'true')
 
