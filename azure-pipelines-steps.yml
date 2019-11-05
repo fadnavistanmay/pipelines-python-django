@@ -27,6 +27,12 @@ steps:
     cacheHitVar: CACHE_RESTORED
   displayName: Cache packages
 
+- task: Cache@2
+  inputs:
+    key: $(CACHE_KEY) | cachega
+    path: $(PYTHONPATH)
+  displayName: Cache packages GA
+
 - script: |
     pip install --target=$(PYTHONPATH) -r requirements.txt
   displayName: 'Install prerequisites'
